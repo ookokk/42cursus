@@ -1,41 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 13:09:18 by ncolomer          #+#    #+#             */
-/*   Updated: 2019/10/10 17:24:41 by ncolomer         ###   ########.fr       */
+/*   Created: 2019/10/09 20:25:31 by ncolomer          #+#    #+#             */
+/*   Updated: 2019/10/18 22:54:08 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void
-	*ft_memmove(void *dst, const void *src, size_t len)
+t_list
+	*ft_lstmap(t_list *lst, void *(*f)(void*), void (*del)(void *))
 {
-	int	i;
+	t_list	*first;
+	t_list	*new;
 
-	if (!dst || !src)
+	if (!f || !del)
 		return (NULL);
-	if (dst > src)
+	first = NULL;
+	while (lst)
 	{
-		i = (int)len - 1;
-		while (i >= 0)
+		if (!(new = ft_lstnew((*f)(lst->content))))
 		{
-			*(char*)(dst + i) = *(char*)(src + i);
-			i--;
+			while (first)
+			{
+				new = first->next;
+				(*del)(first->content);
+				free(first);
+				first = new;
+			}
+			lst = NULL;
+			return (NULL);
 		}
+		ft_lstadd_back(&first, new);
+		lst = lst->next;
 	}
-	else
-	{
-		i = 0;
-		while (i < (int)len)
-		{
-			*(char*)(dst + i) = *(char*)(src + i);
-			i++;
-		}
-	}
-	return (dst);
+	return (first);
 }

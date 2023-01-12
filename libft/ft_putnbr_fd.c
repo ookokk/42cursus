@@ -1,41 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 13:09:18 by ncolomer          #+#    #+#             */
-/*   Updated: 2019/10/10 17:24:41 by ncolomer         ###   ########.fr       */
+/*   Created: 2019/10/07 17:09:44 by ncolomer          #+#    #+#             */
+/*   Updated: 2019/10/14 11:24:49 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void
-	*ft_memmove(void *dst, const void *src, size_t len)
+static int
+	ft_abs(int nbr)
 {
-	int	i;
+	return ((nbr < 0) ? -nbr : nbr);
+}
 
-	if (!dst || !src)
-		return (NULL);
-	if (dst > src)
+void
+	ft_putnbr_fd(int n, int fd)
+{
+	char	str[13];
+	int		is_neg;
+	int		length;
+
+	is_neg = (n < 0);
+	ft_bzero(str, 13);
+	if (n == 0)
+		str[0] = '0';
+	length = 0;
+	while (n != 0)
 	{
-		i = (int)len - 1;
-		while (i >= 0)
-		{
-			*(char*)(dst + i) = *(char*)(src + i);
-			i--;
-		}
+		str[length++] = '0' + ft_abs(n % 10);
+		n = (n / 10);
 	}
-	else
-	{
-		i = 0;
-		while (i < (int)len)
-		{
-			*(char*)(dst + i) = *(char*)(src + i);
-			i++;
-		}
-	}
-	return (dst);
+	if (is_neg)
+		str[length] = '-';
+	else if (length > 0)
+		length--;
+	while (length >= 0)
+		write(fd, &str[length--], 1);
 }

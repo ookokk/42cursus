@@ -1,41 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_memccpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 13:09:18 by ncolomer          #+#    #+#             */
-/*   Updated: 2019/10/10 17:24:41 by ncolomer         ###   ########.fr       */
+/*   Created: 2019/10/07 12:24:10 by ncolomer          #+#    #+#             */
+/*   Updated: 2019/10/10 00:27:35 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 void
-	*ft_memmove(void *dst, const void *src, size_t len)
+	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
-	int	i;
+	size_t	i;
 
 	if (!dst || !src)
 		return (NULL);
-	if (dst > src)
+	i = 0;
+	while (i < n)
 	{
-		i = (int)len - 1;
-		while (i >= 0)
-		{
-			*(char*)(dst + i) = *(char*)(src + i);
-			i--;
-		}
+		*(unsigned char*)(dst + i) = *(unsigned char*)(src + i);
+		if (*(unsigned char*)(src + i) == (unsigned char)c)
+			return (dst + i + 1);
+		i++;
 	}
-	else
-	{
-		i = 0;
-		while (i < (int)len)
-		{
-			*(char*)(dst + i) = *(char*)(src + i);
-			i++;
-		}
-	}
-	return (dst);
+	return (NULL);
 }

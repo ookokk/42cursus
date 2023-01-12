@@ -1,41 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ncolomer <ncolomer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 13:09:18 by ncolomer          #+#    #+#             */
-/*   Updated: 2019/10/10 17:24:41 by ncolomer         ###   ########.fr       */
+/*   Created: 2019/10/07 11:17:02 by ncolomer          #+#    #+#             */
+/*   Updated: 2019/10/10 00:31:59 by ncolomer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void
-	*ft_memmove(void *dst, const void *src, size_t len)
+int
+	ft_atoi(const char *str)
 {
 	int	i;
+	int	is_neg;
+	int	res;
 
-	if (!dst || !src)
-		return (NULL);
-	if (dst > src)
-	{
-		i = (int)len - 1;
-		while (i >= 0)
-		{
-			*(char*)(dst + i) = *(char*)(src + i);
-			i--;
-		}
-	}
-	else
-	{
-		i = 0;
-		while (i < (int)len)
-		{
-			*(char*)(dst + i) = *(char*)(src + i);
-			i++;
-		}
-	}
-	return (dst);
+	if (!str)
+		return (0);
+	i = 0;
+	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v' ||
+			str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
+		i++;
+	is_neg = (str[i] == '-') ? -1 : 1;
+	if (is_neg == -1 || str[i] == '+')
+		i++;
+	res = 0;
+	while (str[i] >= '0' && str[i] <= '9')
+		res = (res * 10) + (str[i++] - '0');
+	return (res * is_neg);
 }
